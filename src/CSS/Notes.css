@@ -1,0 +1,90 @@
+*{
+    margin:0;
+    width: auto;
+    height: auto;
+}
+
+.notes-page{
+    display: flex;
+}
+
+.add-notes-group{
+    width: 25vw;
+    height: 100vh;
+    background-color: white;
+}
+
+.heading{
+    font-size: 1.8em;
+    padding: 7% 5%;
+    font-family: 'Roboto',sans-serif;
+}
+
+.add-btn{
+    width: 75%;
+    height: 5%;
+    margin-top: 3%;
+    margin-left: 10%;
+    padding: 2%;
+    color: white;
+    font-size: 1.15rem;
+    font-weight: 300;
+    text-align: center;
+    background-color: black;
+    font-family: 'Roboto',sans-serif;
+    letter-spacing: 1px;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.add-icon{
+    width: 5%;
+    float: left;
+    margin-top: 1.2%;
+    margin-left: 5%;
+}
+
+.initial-display{
+    width: 75vw;
+    height: 100vh;
+    background-color: #F7ECDC;
+}
+
+.display-logo{
+    width: 50%;
+    display: flex; 
+    margin-top: 15%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.display-heading{
+    font-size: 2em;
+    text-align: center;
+    font-family: 'Roboto',sans-serif;
+    font-weight: lighter;
+    letter-spacing: 2px;
+}
+
+.display-text{
+    margin-top: 1.2%;
+    color: #292929;
+    text-align: center;
+    font-family: 1.5em;
+    font-family: 'Roboto',sans-serif;
+    line-height: 22px;
+    letter-spacing: 1.5px;
+}
+
+.encrypt-text{
+    display: flex;
+    margin-top: 12%;
+    font-family: 'Roboto',sans-serif;
+    font-size: 1rem;
+}
+
+.lock-icon{
+    width: 1.2%;
+    margin-left: 40%;
+    margin-right: 0.5%;
+}
