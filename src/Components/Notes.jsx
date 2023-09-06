@@ -1,13 +1,80 @@
-import React from "react";
+import React, { useState } from "react";
+import Modal from "react-modal";
 import "./../CSS/Notes.css";
+import "./../CSS/Popup.css";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    width:'35%',
+    height:'31%',
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+Modal.setAppElement("#root");
 
 export default function Notes() {
+  const [modalIsOpen, setIsOpen] = useState(false);
+
+  function openModal() {
+    setIsOpen(true);
+  }
+  
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  const [colors] = useState([
+    {
+      id: 1,
+      color: "#B38BFA",
+    },
+    {
+      id: 2,
+      color: "#FF79F2",
+    },
+    {
+      id: 3,
+      color: "#43E6FC",
+    },
+    {
+      id: 4,
+      color: "#F19576",
+    },
+    {
+      id: 5,
+      color: "#0047FF",
+    },
+    {
+      id: 6,
+      color: "#6691FF",
+    },
+  ]);
+
+  const [inputText, setInputText] = useState('');
+  const [displayText, setDisplayText] = useState([]);
+  
+  const handleInputChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  const addTextToDisplay = (e) => {
+    e.preventDefault()
+      setDisplayText([...displayText, inputText]);
+      localStorage.setItem('groups',displayText)
+      setInputText('');
+  };
+
   return (
     <>
       <div className="notes-page">
         <div className="add-notes-group">
           <h1 className="heading">Pocket Notes</h1>
-          <button className="add-btn">
+          <button className="add-btn" onClick={openModal}>
             <img
               src="./icons/add.svg"
               alt="add-icon"
@@ -15,8 +82,45 @@ export default function Notes() {
             ></img>
             Create Notes Group
           </button>
-          <div className="groups-display"></div>
+          <div className="popup-window">
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              style={customStyles}
+            >
+              <form>
+              <h1 className="popup-heading">Create New Notes Group</h1>
+              <span className="group-name-text">Group Name</span>
+              <input
+                placeholder="Enter your group name..."
+                className="group-name-input"
+                onChange={handleInputChange}
+              ></input>
+              <div className="color-section">
+              <span className="choose-color-text">Choose Color</span>
+              <div className="choose-colors">
+                {colors.map((color) => (
+                  <div className="colors"
+                    key={color.id}
+                    style={{
+                      backgroundColor: color.color,
+                    }}
+                  ></div>
+                ))}
+              </div>
+              </div>
+              <button className="create-btn" onClick={addTextToDisplay} >Create</button>
+            </form>
+            </Modal>
+          </div>
+
+          <div className="groups-display">
+          {displayText.map((input, index) => (
+          <div key={index}>{input}</div>
+        ))}
+          </div>
         </div>
+
         <div className="initial-display">
           <img
             src="./icons/logo.png"
@@ -30,7 +134,11 @@ export default function Notes() {
             Use Pocket Notes on up to 4 linked devices and 1 mobile phone
           </p>
           <footer className="encrypt-text">
-            <img src="./icons/lock.svg" alt="encryption-logo" className="lock-icon"></img>
+            <img
+              src="./icons/lock.svg"
+              alt="encryption-logo"
+              className="lock-icon"
+            ></img>
             <footer className="footer">end-to-end encrypted</footer>
           </footer>
         </div>
