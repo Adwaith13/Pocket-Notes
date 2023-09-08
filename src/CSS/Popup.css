@@ -27,8 +27,9 @@
   font-size: 1rem;
 }
 .color-section {
-  display: inline;
+  display: flex;
 }
+
 .choose-color-text {
   font-family: "Roboto", sans-serif;
   font-size: 1rem;
@@ -36,14 +37,13 @@
 }
 
 .choose-colors {
-  margin-left: 40%;
   display: flex;
+  margin-left: 12%;
 }
 
 .colors {
-  display: inline;
   margin-right: 5%;
-  width: 25px;
+  width: 35px;
   height: 25px;
   border-radius: 50px;
   cursor: pointer;
