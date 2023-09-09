@@ -15,6 +15,8 @@ const customStyles = {
   },
 };
 
+Modal.setAppElement("#root");
+
 export default function Notes() {
   const [modalIsOpen, setIsOpen] = useState(false);
 
@@ -57,20 +59,66 @@ export default function Notes() {
   const [inputData, setInputData] = useState([]);
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedGroup, setSelectedGroup] = useState(null);
+  const [notes, setNotes] = useState("");
+  const [notesGroup, setNotesGroup] = useState({});
 
-  const addTextToDisplay = (e) => {
+  const addGroups = (e) => {
     e.preventDefault();
-    const groups = { text: inputText, color: selectedColor,notes:[] };
+    const groups = { text: inputText, color: selectedColor };
     const updatedData = [...inputData, groups];
     setInputData(updatedData);
     localStorage.setItem("groups", JSON.stringify(updatedData));
     setInputText("");
+    setNotesGroup((prevNotes) => ({
+      ...prevNotes,
+      [inputText]: [],
+    }));
+  };
+
+  const addNotes = (e) => {
+    e.preventDefault();
+    if (selectedGroup !== null) {
+      const now = new Date();
+      const formattedDateTime = `${now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+      })},
+       ${now.toLocaleDateString([], {
+         year: "numeric",
+         month: "long",
+         day: "numeric",
+       })}`;
+      setNotesGroup((prevNotesGroup) => {
+        const updatedGroupNotes = [
+          ...prevNotesGroup[inputData[selectedGroup].text],
+          { note: notes, dateTime: formattedDateTime },
+        ];
+        const updatedNotes = {
+          ...prevNotesGroup,
+          [inputData[selectedGroup].text]: updatedGroupNotes,
+        };
+        localStorage.setItem("notesGroups", JSON.stringify(updatedNotes));
+        return updatedNotes;
+      });
+      setNotes("");
+    }
   };
 
   useEffect(() => {
     const storedData = JSON.parse(localStorage.getItem("groups"));
     if (storedData) {
       setInputData(storedData);
+      const initialGroupNotes = {};
+      storedData.forEach((group) => {
+        initialGroupNotes[group.text] = [];
+      });
+
+      const storedNotesGroups = JSON.parse(localStorage.getItem("notesGroups"));
+      if (storedNotesGroups) {
+        setNotesGroup(storedNotesGroups);
+      } else {
+        setNotesGroup(initialGroupNotes);
+      }
     }
   }, []);
 
@@ -97,7 +145,11 @@ export default function Notes() {
           </button>
 
           <div className="popup-window">
-            <Modal isOpen={modalIsOpen} onRequestClose={closeModal} style={customStyles}>
+            <Modal
+              isOpen={modalIsOpen}
+              onRequestClose={closeModal}
+              style={customStyles}
+            >
               <form>
                 <h1 className="popup-heading">Create New Notes Group</h1>
                 <span className="group-name-text">Group Name</span>
@@ -122,7 +174,7 @@ export default function Notes() {
                     ))}
                   </div>
                 </div>
-                <button className="create-btn" onClick={addTextToDisplay}>
+                <button className="create-btn" onClick={addGroups}>
                   Create
                 </button>
               </form>
@@ -131,9 +183,16 @@ export default function Notes() {
 
           <div className="groups-display">
             {inputData.map((input, index) => (
-              <div key={index} className="group-container" onClick={() => handleSelectedGroup(index)}>
-                <div className="profile" style={{ backgroundColor: input.color.color }}>
-                  {input.text.replace().slice(0, 2).toUpperCase()}
+              <div
+                key={index}
+                className="group-container"
+                onClick={() => handleSelectedGroup(index)}
+              >
+                <div
+                  className="profile"
+                  style={{ backgroundColor: input.color.color }}
+                >
+                  {input.text.slice(0, 2).toUpperCase()}
                 </div>
                 <div className="group-text">{input.text}</div>
               </div>
@@ -143,48 +202,80 @@ export default function Notes() {
 
         <div className="initial-display">
           {selectedGroup !== null && (
-          <div className="notes-taking-section">
-          <div className="notes-section">
-            <div className="profile-section">
-            <div className="notes-profile" style={{ backgroundColor: inputData[selectedGroup].color.color }}>
-              {inputData[selectedGroup].text.replace().slice(0,2).toUpperCase()}
-            </div>
-            <h2 className="notes-group-name">{inputData[selectedGroup].text}</h2>
-            </div>
-            <div className="notes-display">
+            <div className="notes-taking-section">
+              <div className="notes-section">
+                <div className="profile-section">
+                  <div
+                    className="notes-profile"
+                    style={{
+                      backgroundColor: inputData[selectedGroup].color.color,
+                    }}
+                  >
+                    {inputData[selectedGroup].text.slice(0, 2).toUpperCase()}
+                  </div>
+                  <h2 className="notes-group-name">
+                    {inputData[selectedGroup].text}
+                  </h2>
+                </div>
+                {notesGroup[inputData[selectedGroup].text].map(
+                  (note, index) => (
+                    <>
+                      <div key={index} className="note">
+                        {note.note}
+                      </div>
+                      <p className="note-time">{note.dateTime}</p>
+                    </>
+                  )
+                )}
 
+                <div className="textarea">
+                  <img
+                    src="./icons/send.svg"
+                    alt="send"
+                    className="sendicon"
+                    onClick={addNotes}
+                  ></img>
+                  <textarea
+                    className="notes-input"
+                    placeholder="Enter your text here..."
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" && !e.shiftKey) {
+                        e.preventDefault();
+                        addNotes(e);
+                      }
+                    }}
+                  ></textarea>
+                </div>
+              </div>
             </div>
-          <div className="textarea">
-            <textarea className="notes-input" placeholder="Enter your text here..." ></textarea>
-            </div>
-          </div>
-          </div>
-        )}
+          )}
 
-        {selectedGroup === null && (
-          <div>
-            <img
-              src="./icons/logo.png"
-              alt="display-icon"
-              className="display-logo"
-            ></img>
-            <h1 className="display-heading">Pocket Notes</h1>
-            <p className="display-text">
-              Send and receive messages without keeping your phone online.
-              <br></br>
-              Use Pocket Notes on up to 4 linked devices and 1 mobile phone
-            </p>
-            <footer className="encrypt-text">
+          {selectedGroup === null && (
+            <div>
               <img
-                src="./icons/lock.svg"
-                alt="encryption-logo"
-                className="lock-icon"
+                src="./icons/logo.png"
+                alt="display-icon"
+                className="display-logo"
               ></img>
-              <footer className="footer">end-to-end encrypted</footer>
-            </footer>
-          </div>
-        )}
-      </div>
+              <h1 className="display-heading">Pocket Notes</h1>
+              <p className="display-text">
+                Send and receive messages without keeping your phone online.
+                <br></br>
+                Use Pocket Notes on up to 4 linked devices and 1 mobile phone
+              </p>
+              <footer className="encrypt-text">
+                <img
+                  src="./icons/lock.svg"
+                  alt="encryption-logo"
+                  className="lock-icon"
+                ></img>
+                <footer className="footer">end-to-end encrypted</footer>
+              </footer>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

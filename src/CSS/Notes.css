@@ -78,6 +78,8 @@
 
 .encrypt-text{
     display: flex;
+    background-color: #F7ECDC;
+    padding-bottom: 1.5%;
     margin-top: 12%;
     font-family: 'Roboto',sans-serif;
     font-size: 1rem;
@@ -130,11 +132,11 @@
 
 .notes-taking-section{
     width: 75vw;
+    height: 95vh;
     background-color: white;
 }
 
 .notes-section{
-    height: 95vh;
     border-bottom-left-radius:20px ;
     background-color: #F7ECDC;
 }
@@ -168,8 +170,8 @@
 
 .notes-input{
     margin-top: 1.5%;
-    margin-left: 5%;
-    width: 68vw;
+    margin-left: 2%;
+    width: 71vw;
     height: 22vh;
     border-radius: 10px;
     font-family: 'Roboto',sans-serif;
@@ -182,4 +184,13 @@
     background-color: #E8E8E8;
     border-bottom-left-radius:20px ;
     height: 30vh;
+}
+
+.sendicon{
+    position: absolute;
+    margin-left: 71.5%;
+    margin-top: 11%;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
 }
