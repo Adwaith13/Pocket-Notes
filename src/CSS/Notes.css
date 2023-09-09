@@ -94,6 +94,7 @@
 .groups-display{
     margin-left: 12%;
     margin-top: 10%;
+    cursor: pointer;
 }
 
 .group-container{
@@ -122,7 +123,6 @@
     letter-spacing: 0.5px;
     margin-top: 5%;
     margin-bottom: 15%;
-    cursor: pointer;
 }
 
 .selected-color{
@@ -177,6 +177,34 @@
     font-family: 'Roboto',sans-serif;
     font-size: 1.2rem;
     padding: 10px;
+}
+
+.notes-display{
+    display: flex;
+    overflow-y:auto ;
+}
+
+.note{
+    margin-top: 2%;
+    margin-right: 10%;
+    margin-left: 20%;
+    margin-bottom: 4%;
+    font-family: 'Roboto',sans-serif;
+    font-size: 1rem;
+    font-weight: 200;
+    font-style: normal;
+    letter-spacing: 1px;
+}
+
+.display-datetime{
+    color: #353535;;
+    margin-top: 2%;
+    margin-bottom: 2%;
+    width: 8%;
+    margin-left: 8%;
+    font-family: 'Roboto',sans-serif;
+    font-size: 1rem;
+    letter-spacing: 1px;
 }
 
 .textarea{

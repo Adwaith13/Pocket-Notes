@@ -84,9 +84,9 @@ export default function Notes() {
         minute: "2-digit",
       })},
        ${now.toLocaleDateString([], {
-         year: "numeric",
-         month: "long",
          day: "numeric",
+         month: "long",
+         year: "numeric",
        })}`;
       setNotesGroup((prevNotesGroup) => {
         const updatedGroupNotes = [
@@ -218,13 +218,13 @@ export default function Notes() {
                   </h2>
                 </div>
                 {notesGroup[inputData[selectedGroup].text].map(
-                  (note, index) => (
-                    <>
-                      <div key={index} className="note">
-                        {note.note}
+                  (notes, index) => (
+                      <div key={index} className="notes-display">
+                        <div className="display-datetime">
+                        <p className="note-time">{notes.dateTime}</p>
+                        </div>
+                        <div className="note">{notes.note}</div>
                       </div>
-                      <p className="note-time">{note.dateTime}</p>
-                    </>
                   )
                 )}
 
