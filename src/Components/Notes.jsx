@@ -190,7 +190,7 @@ export default function Notes() {
               >
                 <div
                   className="profile"
-                  style={{ backgroundColor: input.color.color }}
+                  style={{ backgroundColor: input.color.color}}
                 >
                   {input.text.slice(0, 2).toUpperCase()}
                 </div>
@@ -227,14 +227,9 @@ export default function Notes() {
                       </div>
                   )
                 )}
-
+                
                 <div className="textarea">
-                  <img
-                    src="./icons/send.svg"
-                    alt="send"
-                    className="sendicon"
-                    onClick={addNotes}
-                  ></img>
+                <img src="./icons/send.svg" alt="icon" className="sendicon" onClick={addNotes} />
                   <textarea
                     className="notes-input"
                     placeholder="Enter your text here..."
@@ -253,7 +248,7 @@ export default function Notes() {
           )}
 
           {selectedGroup === null && (
-            <div>
+            <div className="desktop-display">
               <img
                 src="./icons/logo.png"
                 alt="display-icon"
